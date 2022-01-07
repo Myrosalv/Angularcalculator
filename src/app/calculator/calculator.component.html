@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <input #output class="form-control output" type="text" readonly value={{value}} />
+    </div>
+    <div class="calc">
+        <div class="row">
+            <button class="num btn" (click)="addValue(1)">1</button>
+            <button class="num btn" (click)="addValue(2)">2</button>
+            <button class="num btn" (click)="addValue(3)">3</button>
+            <button class="operator btn side-btn" (click)="addOperand('*')">*</button>
+        </div>
+        <div class="row">
+            <button class="num btn" (click)="addValue(4)">4</button>
+            <button class="num btn" (click)="addValue(5)">5</button>
+            <button class="num btn" (click)="addValue(6)">6</button>
+            <button class="operator btn side-btn" (click)="addOperand('+')">+</button>
+        </div>
+        <div class="row">
+            <button class="num btn" (click)="addValue(7)">7</button>
+            <button class="num btn" (click)="addValue(8)">8</button>
+            <button class="num btn" (click)="addValue(9)">9</button>
+            <button class="operator btn side-btn" (click)="addOperand('-')">-</button>
+        </div>
+        <div class="row">
+            <button class="reset btn" (click)="clear()">C</button>
+            <button class="num btn" (click)="addValue(0)">0</button>
+            <button class="equal btn" (click)="operation()">=</button>
+            <button class="operator btn side-btn" (click)="addOperand('/')">/</button>
+        </div>
+    </div>
+</div>
