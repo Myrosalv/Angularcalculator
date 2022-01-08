@@ -1,80 +1,113 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-calculator',
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.css']
 })
 export class CalculatorComponent implements OnInit {
-  num1: number = 0
-  num2: number = 0
-  operand: string = ''
-  result: number = 0
-  value: string = ''
-
-  constructor() { }
-
   ngOnInit(): void {
+    throw new Error('Method not implemented.');
   }
 
-  addValue(num: number): void {
-    if (this.operand.length === 0) {
-      if (this.num1 === 0) {
-        this.num1 = num
-        this.value = this.num1.toString()
-      } else {
-        this.num1 = Number(this.num1.toString() + num)
-        this.value = this.num1.toString()
+  input: string = '';
+  result: string = '';
+
+
+  pressNum(num: string) {
+
+    //Do Not Allow . more than once
+    if (num == ".") {
+      if (this.input != "") {
+
+        const lastNum = this.getLastOperand()
+        console.log(lastNum.lastIndexOf("."))
+        if (lastNum.lastIndexOf(".") >= 0) return;
       }
     }
-    if (this.operand.length === 1) {
-      if (this.num2 === 0) {
-        this.num2 = num
-        this.value = this.num1.toString() + this.operand + this.num2.toString()
-      } else {
-        this.num2 = Number(this.num2.toString() + num)
-        this.value = this.num1.toString() + this.operand + this.num2.toString()
+
+    //Do Not Allow 0 at beginning. 
+    //Javascript will throw Octal literals are not allowed in strict mode.
+    if (num == "0") {
+      if (this.input == "") {
+        return;
+      }
+      const PrevKey = this.input[this.input.length - 1];
+      if (PrevKey === '/' || PrevKey === '*' || PrevKey === '-' || PrevKey === '+') {
+        return;
       }
     }
+
+    this.input = this.input + num
+    this.calcAnswer();
   }
 
-  addOperand(operand: string): void {
-    this.operand = operand
-    this.value = this.num1.toString() + this.operand
+
+  getLastOperand() {
+    let pos: number;
+    console.log(this.input)
+    pos = this.input.toString().lastIndexOf("+")
+    if (this.input.toString().lastIndexOf("-") > pos) pos = this.input.lastIndexOf("-")
+    if (this.input.toString().lastIndexOf("*") > pos) pos = this.input.lastIndexOf("*")
+    if (this.input.toString().lastIndexOf("/") > pos) pos = this.input.lastIndexOf("/")
+    console.log('Last ' + this.input.substr(pos + 1))
+    return this.input.substr(pos + 1)
   }
 
-  clear(): void {
-    this.num1 = 0
-    this.num2 = 0
-    this.operand = ''
-    this.result = 0
-    this.value = ''
-  }
 
-  operation(): void {
-    let result = this.calculate(this.num1, this.num2, this.operand)
-    this.num1 = Number(result)
-    this.num2 = 0
-    this.operand = ''
-    this.value = result.toString()
-  }
+  pressOperator(op: string) {
 
-  calculate(num1: number, num2: number, operand: string): number | string {
-    switch (operand) {
-      case '+':
-        return num1 + num2
-      case '-':
-        return num1 - num2
-      case '*':
-        return num1 * num2
-      case '/':
-        if (num2 === 0) {
-        } else {
-          return num1 / num2
-        }
-
+    //Do not allow operators more than once
+    const lastKey = this.input[this.input.length - 1];
+    if (lastKey === '/' || lastKey === '*' || lastKey === '-' || lastKey === '+') {
+      return;
     }
 
-    return 'User did not enter valid values'
+    this.input = this.input + op
+    this.calcAnswer();
   }
+
+
+  clear() {
+    if (this.input != "") {
+      this.input = this.input.substr(0, this.input.length - 1)
+    }
+  }
+
+  allClear() {
+    this.result = '';
+    this.input = '';
+  }
+
+  calcAnswer() {
+    let formula = this.input;
+
+    let lastKey = formula[formula.length - 1];
+
+    if (lastKey === '.') {
+      formula = formula.substr(0, formula.length - 1);
+    }
+
+    lastKey = formula[formula.length - 1];
+
+    if (lastKey === '/' || lastKey === '*' || lastKey === '-' || lastKey === '+' || lastKey === '.') {
+      formula = formula.substr(0, formula.length - 1);
+    }
+
+    console.log("Formula " + formula);
+    this.result = eval(formula);
+  }
+
+  getAnswer() {
+    this.calcAnswer();
+    this.input = this.result;
+    if (this.input == "0") this.input = "";
+  }
+
+
+
+
 }
+
+
