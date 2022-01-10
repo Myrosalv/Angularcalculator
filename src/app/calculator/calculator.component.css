@@ -50,9 +50,15 @@ body {
 }
 
 .output {
-    width: 350px;
+    width: 190px;
     font: 2em 'PT Sans', sans-serif;
     margin-bottom: 20px;
+}
+
+.input {
+    width: 190px;
+    font: 2em 'PT Sans', sans-serif;
+    margin-bottom: 10000px;
 }
 
 .table {
